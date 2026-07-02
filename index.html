@@ -1084,13 +1084,13 @@
             title: "Supervisor"
         };
         let configHRD = {
-            name: "Siti Rahmawati, S.Psi.",
-            title: "HRD & GA Manager"
+            name: "Camilia",
+            title: "HRD"
         };
 
         window.onload = function() {
             // VERIFIKASI & MIGRASI DATABASE AKUN USER AGAR KOMPATIBEL DENGAN USERNAME (SELF-HEALING)
-            let storedUsers = localStorage.getItem('users');
+            let storedUsers = db.ref('...').on('value', ...)('users');
             let needsReset = false;
             if (storedUsers) {
                 try {
@@ -1106,18 +1106,18 @@
             }
 
             if(needsReset) {
-                localStorage.setItem('users', JSON.stringify(defaultUsers));
+                db.ref('...').set(...)('users', JSON.stringify(defaultUsers));
             }
             users = JSON.parse(localStorage.getItem('users'));
 
             if(!localStorage.getItem('submissions')) {
-                localStorage.setItem('submissions', JSON.stringify(defaultSubmissions));
+                db.ref('...').set(...)('submissions', JSON.stringify(defaultSubmissions));
             }
             submissions = JSON.parse(localStorage.getItem('submissions'));
 
             // Initialize Violations Storage
             if(!localStorage.getItem('violations')) {
-                localStorage.setItem('violations', JSON.stringify(defaultViolations));
+                db.ref('...').set(...)('violations', JSON.stringify(defaultViolations));
             }
             violations = JSON.parse(localStorage.getItem('violations'));
 
@@ -1130,7 +1130,7 @@
                 picSignaturePng = localStorage.getItem('picSignaturePng');
             } else {
                 picSignaturePng = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='150' height='70'><path d='M15,45 Q35,10 65,35 T115,30 T145,20 M45,15 Q55,55 50,20 M80,20 Q95,50 90,20' fill='none' stroke='%23020617' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/></svg>";
-                localStorage.setItem('picSignaturePng', picSignaturePng);
+                db.ref('...').set(...)('picSignaturePng', picSignaturePng);
             }
 
             document.getElementById('cfg-spv-name').value = configSPV.name;
@@ -1374,7 +1374,7 @@
                 }
                 
                 // Simpan perubahan ke storage & state aktif
-                localStorage.setItem('users', JSON.stringify(users));
+                db.ref('...').set(...)('users', JSON.stringify(users));
                 currentUser = targetUser;
                 sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
                 
@@ -1418,7 +1418,7 @@
                 };
 
                 users.push(newEmp);
-                localStorage.setItem('users', JSON.stringify(users));
+                db.ref('...').set(...)('users', JSON.stringify(users));
 
                 showCustomToast('success', `Akun ${role === 'pic' ? 'PIC' : 'Karyawan'} baru ${nama} (@${username}) berhasil didaftarkan!`);
                 document.getElementById('registerEmployeeForm').reset();
@@ -1483,7 +1483,7 @@
             const emp = users.find(u => u.nik === nik);
             if (emp) {
                 emp.role = newRole;
-                localStorage.setItem('users', JSON.stringify(users));
+                db.ref('...').set(...)('users', JSON.stringify(users));
                 showCustomToast('success', `Hak akses ${emp.nama} (${emp.nik}) sukses diperbarui menjadi ${newRole === 'pic' ? 'PIC Jembatan' : 'Karyawan'}`);
                 renderEmployeeList();
                 renderStats();
@@ -2074,7 +2074,7 @@
             };
 
             violations.push(newVio);
-            localStorage.setItem('violations', JSON.stringify(violations));
+            db.ref('...').set(...)('violations', JSON.stringify(violations));
 
             showCustomToast('success', 'Catatan pelanggaran sukses direkam!');
             document.getElementById('newViolationForm').reset();
@@ -2086,7 +2086,7 @@
         function handleDeleteViolation(id, nik) {
             showCustomConfirm("Apakah Anda yakin ingin menghapus catatan pelanggaran ini dari rekam medis staf?", function() {
                 violations = violations.filter(v => v.id !== id);
-                localStorage.setItem('violations', JSON.stringify(violations));
+                db.ref('...').set(...)('violations', JSON.stringify(violations));
                 
                 showCustomToast('success', 'Catatan pelanggaran berhasil dihapus!');
                 renderViolationsInModal(nik);
@@ -2111,7 +2111,7 @@
                 const rawSig = e.target.result;
                 removeWhiteBackground(rawSig, function(transparentSig) {
                     picSignaturePng = transparentSig;
-                    localStorage.setItem('picSignaturePng', picSignaturePng);
+                    db.ref('...').set(...)('picSignaturePng', picSignaturePng);
                     applyPicSignaturePreviews();
                     showCustomToast('success', 'Gambar tanda tangan PIC berhasil diunggah!');
                 });
@@ -2211,8 +2211,8 @@
             configHRD.name = document.getElementById('cfg-hrd-name').value;
             configHRD.title = document.getElementById('cfg-hrd-title').value;
 
-            localStorage.setItem('configSPV', JSON.stringify(configSPV));
-            localStorage.setItem('configHRD', JSON.stringify(configHRD));
+            db.ref('...').set(...)('configSPV', JSON.stringify(configSPV));
+            db.ref('...').set(...)('configHRD', JSON.stringify(configHRD));
 
             showCustomToast('success', 'Konfigurasi Penandatangan SPV & HRD berhasil diperbarui.');
         }
@@ -2234,7 +2234,7 @@
                 
                 removeWhiteBackground(rawLogo, function(transparentLogo) {
                     customLogo = transparentLogo;
-                    localStorage.setItem('customLogo', customLogo);
+                    db.ref('...').set(...)('customLogo', customLogo);
                     applyCustomLogo();
                     showCustomToast('success', 'Logo kustom berhasil diunggah & latar belakang putih otomatis dihapus!');
                 });
@@ -2671,7 +2671,7 @@
         }
 
         function saveData() {
-            localStorage.setItem('submissions', JSON.stringify(submissions));
+            db.ref('...').set(...)('submissions', JSON.stringify(submissions));
         }
 
         function triggerResetConfirmation() {
@@ -2804,6 +2804,49 @@
                 }, 300);
             }, 4000);
         }
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
+    <script>
+        // 2. Masukkan Konfigurasi Firebase dari Langkah 2 di sini
+        const firebaseConfig = {
+            apiKey: "AIzaSyBxxxxxxx-xxxxxxxxxxx",
+            authDomain: "si-rdf-jakarta.firebaseapp.com",
+            databaseURL: "https://si-rdf-jakarta-default-rtdb.firebaseio.com",
+            projectId: "si-rdf-jakarta",
+            storageBucket: "si-rdf-jakarta.appspot.com",
+            messagingSenderId: "1234567890",
+            appId: "1:1234567890:web:abcdef123456"
+        };
+
+        // 3. Inisialisasi Firebase & Database
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Contoh: Mengganti fungsi simpan localStorage menjadi Firebase
+        // Jika sebelumnya kamu pakai: db.ref('...').set(...)('users', JSON.stringify(users));
+        // Sekarang ganti menjadi:
+        function saveUsersToFirebase(usersData) {
+            db.ref('users').set(usersData)
+              .then(() => console.log('Data user sukses tersimpan ke Firebase!'))
+              .catch((error) => console.error('Gagal menyimpan:', error));
+        }
+
+        // Contoh: Menarik data secara Real-Time dari Firebase (Mengganti getItem)
+        function listenToDataChanges() {
+            db.ref('submissions').on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    submissions = data; // Update variabel lokal kamu
+                    renderSubmissions(); // Panggil fungsi render ulang tabel kamu
+                    renderStats();
+                }
+            });
+        }
+        
+        // Panggil fungsi listener saat aplikasi dimuat
+        // listenToDataChanges();
     </script>
 </body>
 </html>
