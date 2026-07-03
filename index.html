@@ -48,7 +48,7 @@
         <div class="bg-white/95 backdrop-blur-md w-full max-w-md rounded-2xl shadow-2xl border border-white/20 overflow-hidden">
             <div class="p-8 text-center bg-gradient-to-b from-blue-700 to-indigo-900 text-white relative">
                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-blue-500/20 via-transparent to-transparent opacity-60"></div>
-                <div class="w-full h-24 flex items-center justify-center overflow-hidden mx-auto mb-3 relative z-10">
+                <div class="w-full h-40 flex items-center justify-center overflow-hidden mx-auto mb-3 relative z-10">
                     <img id="loginLogoImg" src="" class="max-h-full max-w-full object-contain hidden" alt="Logo">
                     <div id="loginLogoFallback" class="text-white text-center font-extrabold text-3xl leading-none tracking-widest">RDF PLANT</div>
                 </div>
@@ -74,24 +74,6 @@
                 <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3 px-4 rounded-xl transition duration-300 shadow-lg shadow-blue-700/20 text-sm">
                     <i class="fa-solid fa-right-to-bracket mr-2"></i> Masuk ke Sistem
                 </button>
-
-                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3.5 mt-4">
-                    <p class="text-[11px] font-bold text-slate-600 uppercase mb-1.5"><i class="fa-solid fa-circle-info text-blue-600 mr-1"></i> Akun Pengujian Manajemen (Sandi: 123):</p>
-                    <div class="grid grid-cols-3 gap-2 text-[10px] text-slate-500 text-center">
-                        <div class="bg-white p-2 rounded border border-slate-200">
-                            <p class="font-bold text-blue-700">1. Akses PIC</p>
-                            <p class="mt-0.5">User: <code class="font-bold text-slate-700">pic</code></p>
-                        </div>
-                        <div class="bg-white p-2 rounded border border-slate-200">
-                            <p class="font-bold text-amber-700">2. Akses SPV</p>
-                            <p class="mt-0.5">User: <code class="font-bold text-slate-700">spv</code></p>
-                        </div>
-                        <div class="bg-white p-2 rounded border border-slate-200">
-                            <p class="font-bold text-emerald-700">3. Akses HRD</p>
-                            <p class="mt-0.5">User: <code class="font-bold text-slate-700">hrd</code></p>
-                        </div>
-                    </div>
-                </div>
             </form>
         </div>
     </div>
@@ -101,8 +83,8 @@
         
         <!-- SIDEBAR / NAVIGATION -->
         <aside class="w-full md:w-64 bg-slate-950 text-white flex flex-col no-print border-r border-slate-900/50">
-            <div class="p-6 border-b border-slate-900 flex items-center justify-center bg-gradient-to-b from-slate-950 to-slate-900">
-                <div class="w-24 h-16 flex items-center justify-center overflow-hidden">
+            <div class="p-5 border-b border-slate-900 flex items-center justify-center bg-gradient-to-b from-slate-950 to-slate-900">
+                <div class="w-full h-28 flex items-center justify-center overflow-hidden">
                     <img id="sidebarLogoImg" src="" class="max-h-full max-w-full object-contain hidden" alt="Logo">
                     <div id="sidebarLogoFallback" class="text-blue-400 text-center font-extrabold text-xl leading-none tracking-widest">RDF PLANT</div>
                 </div>
@@ -479,14 +461,15 @@
                 <!-- SCREEN 3: DATA KARYAWAN -->
                 <div id="screen-data-karyawan" class="hidden max-w-6xl mx-auto space-y-6 page-view">
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                        <!-- Add Employee Form -->
+                        <!-- Add / Edit Employee Form -->
                         <div class="lg:col-span-4 bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
                             <div class="bg-gradient-to-r from-blue-800 to-indigo-950 p-6 text-white relative">
                                 <div class="absolute inset-0 bg-blue-500/10 mix-blend-overlay"></div>
-                                <h3 class="text-lg font-bold"><i class="fa-solid fa-user-plus mr-2"></i>Tambah Karyawan</h3>
-                                <p class="text-xs text-blue-200">Data ini digunakan untuk pilihan dropdown di formulir pengajuan.</p>
+                                <h3 id="empFormTitle" class="text-lg font-bold relative z-10"><i class="fa-solid fa-user-plus mr-2"></i>Tambah Karyawan</h3>
+                                <p id="empFormSubtitle" class="text-xs text-blue-200 relative z-10">Data ini digunakan untuk pilihan dropdown di formulir pengajuan.</p>
                             </div>
                             <form id="addEmployeeForm" onsubmit="handleAddEmployee(event)" class="p-6 space-y-4">
+                                <input type="hidden" id="empEditOriginalNik" value="">
                                 <div>
                                     <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nama Lengkap *</label>
                                     <input type="text" id="empNama" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 outline-none">
@@ -498,13 +481,18 @@
                                 <div>
                                     <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Jabatan *</label>
                                     <select id="empDivisi" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm bg-white focus:ring-blue-500 outline-none">
-                                        <option value="Operator">Operator</option>
+                                        <option value="Supervisor">Supervisor</option>
                                         <option value="PIC">PIC</option>
+                                        <option value="Operator">Operator</option>
+                                        <option value="Leader Shift">Leader Shift</option>
                                     </select>
                                 </div>
-                                <div class="pt-4 border-t border-slate-100">
-                                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-6 rounded-lg shadow-md w-full text-sm transition">
+                                <div class="pt-4 border-t border-slate-100 space-y-2">
+                                    <button type="submit" id="empSubmitBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-6 rounded-lg shadow-md w-full text-sm transition">
                                         <i class="fa-solid fa-save mr-1.5"></i>Simpan Data Master
+                                    </button>
+                                    <button type="button" id="empCancelEditBtn" onclick="batalEditKaryawan()" class="hidden bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-2 px-6 rounded-lg w-full text-xs transition">
+                                        Batal Edit
                                     </button>
                                 </div>
                             </form>
@@ -637,6 +625,7 @@
                                         <option value="Direkomendasikan Lanjut">Direkomendasikan Lanjut</option>
                                         <option value="Dipertimbangkan Kembali">Dipertimbangkan Kembali</option>
                                         <option value="Tidak Direkomendasikan Lanjut">Tidak Direkomendasikan Lanjut</option>
+                                        <option value="Magang Selesai">Dipertimbangkan Kembali</option>
                                     </select>
                                 </div>
                             </div>
@@ -848,7 +837,7 @@
     <!-- TEMPLATE PRINT AREA -->
     <div id="printArea" class="hidden p-8 max-w-3xl mx-auto bg-white text-black text-sm">
         <div class="border-b-4 border-slate-900 pb-5 mb-6 flex items-center justify-between">
-            <div class="w-32 h-24 flex items-center justify-center overflow-hidden">
+            <div class="w-56 h-36 flex items-center justify-center overflow-hidden">
                 <img id="printLogoImg" src="" class="max-h-full max-w-full object-contain hidden">
                 <div id="printLogoFallback" class="font-black text-3xl text-slate-900">RDF</div>
             </div>
@@ -1155,16 +1144,61 @@
             const nama = document.getElementById('empNama').value.trim();
             const nik = document.getElementById('empNik').value.trim().toUpperCase();
             const divisi = document.getElementById('empDivisi').value;
+            const originalNik = document.getElementById('empEditOriginalNik').value;
+            const isEditing = !!originalNik;
 
-            if (karyawanData.find(k => k.nik === nik)) {
+            // Cek duplikasi NIK (abaikan data milik sendiri saat sedang edit)
+            const dup = karyawanData.find(k => k.nik === nik && k.nik !== originalNik);
+            if (dup) {
                 showCustomToast('error', `Gagal! NIK ${nik} sudah terdaftar.`); return;
             }
 
-            karyawanData.push({ nama, nik, divisi });
-            localStorage.setItem('karyawanData', JSON.stringify(karyawanData));
-            showCustomToast('success', `Karyawan ${nama} ditambahkan.`);
-            document.getElementById('addEmployeeForm').reset();
+            if (isEditing) {
+                const target = karyawanData.find(k => k.nik === originalNik);
+                if (target) {
+                    target.nama = nama; target.nik = nik; target.divisi = divisi;
+                }
+                // Jika NIK berubah, ikut perbarui NIK pada catatan pelanggaran terkait supaya tetap terhubung
+                if (originalNik !== nik) {
+                    violations.forEach(v => { if (v.nik === originalNik) v.nik = nik; });
+                    localStorage.setItem('violations', JSON.stringify(violations));
+                }
+                localStorage.setItem('karyawanData', JSON.stringify(karyawanData));
+                showCustomToast('success', `Data karyawan ${nama} diperbarui.`);
+                batalEditKaryawan();
+            } else {
+                karyawanData.push({ nama, nik, divisi });
+                localStorage.setItem('karyawanData', JSON.stringify(karyawanData));
+                showCustomToast('success', `Karyawan ${nama} ditambahkan.`);
+                document.getElementById('addEmployeeForm').reset();
+            }
+
             renderKaryawanTable(); populateKaryawanDropdown();
+        }
+
+        function editKaryawan(nik) {
+            const target = karyawanData.find(k => k.nik === nik);
+            if (!target) return;
+            document.getElementById('empEditOriginalNik').value = target.nik;
+            document.getElementById('empNama').value = target.nama;
+            document.getElementById('empNik').value = target.nik;
+            document.getElementById('empDivisi').value = target.divisi;
+
+            document.getElementById('empFormTitle').innerHTML = '<i class="fa-solid fa-user-pen mr-2"></i>Edit Karyawan';
+            document.getElementById('empFormSubtitle').innerText = `Mengubah data ${target.nama}, termasuk NIK.`;
+            document.getElementById('empSubmitBtn').innerHTML = '<i class="fa-solid fa-save mr-1.5"></i>Update Data Master';
+            document.getElementById('empCancelEditBtn').classList.remove('hidden');
+
+            document.getElementById('empNama').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function batalEditKaryawan() {
+            document.getElementById('addEmployeeForm').reset();
+            document.getElementById('empEditOriginalNik').value = '';
+            document.getElementById('empFormTitle').innerHTML = '<i class="fa-solid fa-user-plus mr-2"></i>Tambah Karyawan';
+            document.getElementById('empFormSubtitle').innerText = 'Data ini digunakan untuk pilihan dropdown di formulir pengajuan.';
+            document.getElementById('empSubmitBtn').innerHTML = '<i class="fa-solid fa-save mr-1.5"></i>Simpan Data Master';
+            document.getElementById('empCancelEditBtn').classList.add('hidden');
         }
 
         function renderKaryawanTable() {
@@ -1176,7 +1210,8 @@
                         <td class="py-3 px-3 font-bold text-slate-800">${k.nama}</td>
                         <td class="py-3 px-3 font-mono text-slate-500">${k.nik}</td>
                         <td class="py-3 px-3 text-slate-600">${k.divisi}</td>
-                        <td class="py-3 px-3 text-center">
+                        <td class="py-3 px-3 text-center whitespace-nowrap">
+                            <button onclick="editKaryawan('${k.nik}')" class="text-blue-500 hover:text-blue-700 p-1"><i class="fa-solid fa-pen"></i></button>
                             <button onclick="hapusKaryawan('${k.nik}')" class="text-rose-500 hover:text-rose-700 p-1"><i class="fa-solid fa-trash"></i></button>
                         </td>
                     </tr>
@@ -1188,6 +1223,7 @@
             showCustomConfirm('Hapus data karyawan ini dari database?', () => {
                 karyawanData = karyawanData.filter(k => k.nik !== nik);
                 localStorage.setItem('karyawanData', JSON.stringify(karyawanData));
+                if (document.getElementById('empEditOriginalNik').value === nik) batalEditKaryawan();
                 renderKaryawanTable(); populateKaryawanDropdown();
                 showCustomToast('success', 'Data karyawan dihapus.');
             });
@@ -1645,9 +1681,9 @@
                 <h3 class="font-bold text-xs bg-gray-100 p-1 border border-black mb-2 text-center">LEMBAR PENGESAHAN DIGITAL</h3>
                 <div class="grid grid-cols-4 gap-2 text-center text-[10px] mt-4">
                     <div class="border p-2">
-                        <b class="text-slate-600">Diinput Oleh</b>
-                        <div class="h-16 flex items-center justify-center my-1 text-slate-300 italic">Sistem</div>
-                        <u>${sub.inputterName || sub.picName || '-'}</u>
+                        <b class="text-slate-600">Pemohon</b>
+                        <div class="h-16 flex items-center justify-center my-1 text-slate-300 italic">Karyawan Ybs.</div>
+                        <u>${sub.nama}</u>
                     </div>
                     <div class="border p-2">
                         <b class="text-blue-700">ACC PIC</b>
