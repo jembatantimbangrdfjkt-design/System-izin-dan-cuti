@@ -137,6 +137,9 @@
                 <a href="#pelanggaran" onclick="changeTab('pelanggaran')" id="nav-pelanggaran" class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition text-slate-400 hover:bg-slate-900 hover:text-white">
                     <i class="fa-solid fa-triangle-exclamation text-lg w-6 text-center"></i><span>Catat Pelanggaran</span>
                 </a>
+                <a href="#magang" onclick="changeTab('magang')" id="nav-magang" class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition text-slate-400 hover:bg-slate-900 hover:text-white">
+                    <i class="fa-solid fa-graduation-cap text-lg w-6 text-center"></i><span>Nilai Anak Magang</span>
+                </a>
 
                 <a href="#persetujuan" onclick="changeTab('persetujuan')" id="nav-persetujuan" class="w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white">
                     <div class="flex items-center space-x-3">
@@ -292,7 +295,7 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-semibold text-slate-500 mb-1">Divisi</label>
+                                        <label class="block text-xs font-semibold text-slate-500 mb-1">Jabatan</label>
                                         <input type="text" id="field-karyawan-divisi" readonly class="w-full bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-500 cursor-not-allowed">
                                     </div>
                                 </div>
@@ -493,9 +496,9 @@
                                     <input type="text" id="empNik" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 outline-none">
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Divisi *</label>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Jabatan *</label>
                                     <select id="empDivisi" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm bg-white focus:ring-blue-500 outline-none">
-                                        <option value="Operator Jembatan Timbang">Operator Jembatan Timbang</option>
+                                        <option value="Operator">Operator</option>
                                         <option value="PIC">PIC</option>
                                     </select>
                                 </div>
@@ -519,7 +522,7 @@
                                         <tr>
                                             <th class="py-3 px-3">Nama Karyawan</th>
                                             <th class="py-3 px-3">NIK</th>
-                                            <th class="py-3 px-3">Divisi</th>
+                                            <th class="py-3 px-3">Jabatan</th>
                                             <th class="py-3 px-3 text-center">Aksi</th>
                                         </tr>
                                     </thead>
@@ -544,7 +547,7 @@
                             <thead class="bg-slate-50 text-slate-600 font-bold uppercase border-b">
                                 <tr>
                                     <th class="py-3 px-5">Nama Karyawan</th>
-                                    <th class="py-3 px-5">NIK / Divisi</th>
+                                    <th class="py-3 px-5">NIK / Jabatan</th>
                                     <th class="py-3 px-5 text-center">Jumlah Pelanggaran</th>
                                     <th class="py-3 px-5 text-center">Status Teguran (SP)</th>
                                     <th class="py-3 px-5 text-center">Tindakan Otoritas</th>
@@ -552,6 +555,98 @@
                             </thead>
                             <tbody id="vPicTableBody" class="divide-y divide-slate-100 text-slate-700"></tbody>
                         </table>
+                    </div>
+                </div>
+
+                <!-- SCREEN: NILAI ANAK MAGANG -->
+                <div id="screen-magang" class="hidden max-w-4xl mx-auto page-view">
+                    <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
+                        <div class="bg-gradient-to-r from-violet-700 to-purple-900 p-6 text-white">
+                            <h3 class="text-lg font-bold"><i class="fa-solid fa-graduation-cap mr-2"></i>Formulir Penilaian Anak Magang</h3>
+                            <p class="text-xs text-violet-200">Diisi oleh PIC. Setelah dinilai, penilaian langsung diteruskan ke SPV untuk di-ACC. Setelah ACC SPV, fitur cetak nilai otomatis aktif.</p>
+                        </div>
+                        <form id="magangForm" onsubmit="handleNilaiMagangSubmit(event)" class="p-6 space-y-6">
+                            <div>
+                                <h4 class="text-xs font-bold text-violet-700 uppercase tracking-wider mb-3 pb-1 border-b border-slate-100">1. Identitas Anak Magang</h4>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 mb-1">Nama Anak Magang *</label>
+                                        <input type="text" id="magang-nama" required placeholder="Nama lengkap anak magang" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-violet-500 outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 mb-1">Asal Sekolah / Kampus *</label>
+                                        <input type="text" id="magang-asal" required placeholder="Contoh: SMK Negeri 1 Jakarta" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-violet-500 outline-none">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 mb-1">Tanggal Mulai Magang *</label>
+                                        <input type="date" id="magang-tgl-mulai" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-violet-500 outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 mb-1">Durasi Magang *</label>
+                                        <select id="magang-durasi" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-violet-500 outline-none">
+                                            <option value="1 Bulan">1 Bulan</option>
+                                            <option value="2 Bulan">2 Bulan</option>
+                                            <option value="3 Bulan">3 Bulan</option>
+                                            <option value="4 Bulan">4 Bulan</option>
+                                            <option value="5 Bulan">5 Bulan</option>
+                                            <option value="6 Bulan">6 Bulan</option>
+                                            <option value="7 Bulan">7 Bulan</option>
+                                            <option value="8 Bulan">8 Bulan</option>
+                                            <option value="9 Bulan">9 Bulan</option>
+                                            <option value="10 Bulan">10 Bulan</option>
+                                            <option value="11 Bulan">11 Bulan</option>
+                                            <option value="12 Bulan">12 Bulan</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-xs font-bold text-violet-700 uppercase tracking-wider mb-3 pb-1 border-b border-slate-100">2. Penilaian Kinerja (Skala 0-100)</h4>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 mb-1">Kedisiplinan *</label>
+                                        <input type="number" id="magang-nilai-disiplin" min="0" max="100" required placeholder="0-100" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-violet-500 outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 mb-1">Tanggung Jawab *</label>
+                                        <input type="number" id="magang-nilai-tanggungjawab" min="0" max="100" required placeholder="0-100" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-violet-500 outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 mb-1">Kerjasama Tim *</label>
+                                        <input type="number" id="magang-nilai-kerjasama" min="0" max="100" required placeholder="0-100" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-violet-500 outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 mb-1">Keterampilan Teknis *</label>
+                                        <input type="number" id="magang-nilai-teknis" min="0" max="100" required placeholder="0-100" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-violet-500 outline-none">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-xs font-bold text-violet-700 uppercase tracking-wider mb-3 pb-1 border-b border-slate-100">3. Ringkasan & Rekomendasi</h4>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-600 mb-1">Ringkasan Kinerja Selama Magang *</label>
+                                    <textarea id="magang-ringkasan" required rows="4" placeholder="Ringkasan capaian, sikap kerja, dan catatan penting lain selama masa magang..." class="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none focus:ring-2 focus:ring-violet-500"></textarea>
+                                </div>
+                                <div class="mt-4">
+                                    <label class="block text-xs font-semibold text-slate-600 mb-1">Rekomendasi *</label>
+                                    <select id="magang-rekomendasi" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-violet-500 outline-none">
+                                        <option value="Direkomendasikan Lanjut">Direkomendasikan Lanjut</option>
+                                        <option value="Dipertimbangkan Kembali">Dipertimbangkan Kembali</option>
+                                        <option value="Tidak Direkomendasikan Lanjut">Tidak Direkomendasikan Lanjut</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 border-t border-slate-100 flex items-center justify-end space-x-3">
+                                <button type="submit" class="px-6 py-2.5 rounded-lg bg-gradient-to-r from-violet-600 to-purple-700 hover:from-violet-700 hover:to-purple-800 text-white shadow-md transition font-semibold text-sm">
+                                    <i class="fa-solid fa-paper-plane mr-2"></i>Kirim Penilaian ke ACC SPV
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
 
@@ -589,7 +684,7 @@
                                     <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Informasi Dokumen</h4>
                                     <div class="grid grid-cols-2 gap-y-2 gap-x-4 text-sm">
                                         <div><span class="text-slate-500 text-xs block">Karyawan Terkait:</span> <strong id="revNama">-</strong></div>
-                                        <div><span class="text-slate-500 text-xs block">NIK / Divisi:</span> <strong id="revNikDiv">-</strong></div>
+                                        <div><span class="text-slate-500 text-xs block">NIK / Jabatan:</span> <strong id="revNikDiv">-</strong></div>
                                         <div class="col-span-2 pt-2 mt-2 border-t border-slate-200"><span class="text-slate-500 text-xs block">Diinput Oleh (Sistem):</span> <strong id="revPicName">-</strong></div>
                                     </div>
                                 </div>
@@ -785,7 +880,7 @@
         const defaultUsers = [
             { username: "pic", nik: "PIC-001", nama: "Ahmad Rafi", role: "pic", password: "123", photo: null, signature: null },
             { username: "spv", nik: "SPV-001", nama: "Mida Ru'yati Laila", role: "spv", password: "123", photo: null, signature: null },
-            { username: "hrd", nik: "HRD-001", nama: "Camilia", role: "hrd", password: "123", photo: null, signature: null }
+            { username: "hrd", nik: "HRD-001", nama: "Siti Rahmawati, S.Psi.", role: "hrd", password: "123", photo: null, signature: null }
         ];
 
         const defaultKaryawan = [
@@ -824,7 +919,7 @@
         let customLogo = null;
 
         // Daftar tab yang valid, dipakai untuk validasi hash URL
-        const VALID_TABS = ['dashboard','pengajuan','berita_acara','data-karyawan','pelanggaran','persetujuan','profile','settings'];
+        const VALID_TABS = ['dashboard','pengajuan','berita_acara','data-karyawan','pelanggaran','magang','persetujuan','profile','settings'];
         
         // Setup initial storage on load
         window.onload = function() {
@@ -856,6 +951,7 @@
             document.getElementById('cuti-tgl-selesai').value = today;
             document.getElementById('shift-tgl').value = today;
             document.getElementById('vioFormTanggal').value = today;
+            document.getElementById('magang-tgl-mulai').value = today;
             
             const now = new Date();
             const localDatetime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
@@ -1036,6 +1132,7 @@
                 'berita_acara': 'Buat Berita Acara',
                 'data-karyawan': 'Master Data Karyawan',
                 'pelanggaran': 'Catatan Disiplin',
+                'magang': 'Penilaian Anak Magang',
                 'persetujuan': `Persetujuan Dokumen (${currentUser.role.toUpperCase()})`,
                 'profile': 'Kelola Profil & TTD',
                 'settings': 'Konfigurasi Sistem'
@@ -1188,6 +1285,43 @@
             changeTab('dashboard');
         }
 
+        // NILAI ANAK MAGANG
+        function handleNilaiMagangSubmit(e) {
+            e.preventDefault();
+
+            const disiplin = parseInt(document.getElementById('magang-nilai-disiplin').value) || 0;
+            const tanggungjawab = parseInt(document.getElementById('magang-nilai-tanggungjawab').value) || 0;
+            const kerjasama = parseInt(document.getElementById('magang-nilai-kerjasama').value) || 0;
+            const teknis = parseInt(document.getElementById('magang-nilai-teknis').value) || 0;
+            const nilaiAkhir = Math.round((disiplin + tanggungjawab + kerjasama + teknis) / 4);
+
+            const newSubmission = {
+                id: `RDF-MGG-${Math.floor(1000 + Math.random() * 9000)}`,
+                type: 'magang',
+                nama: document.getElementById('magang-nama').value, nik: '-', divisi: 'Anak Magang',
+                inputterName: currentUser.nama,
+                picName: currentUser.role === 'pic' ? currentUser.nama : null, picSignature: currentUser.role === 'pic' ? currentUser.signature : null,
+                spvSignature: null, hrdSignature: null,
+                status: "pending_spv", // Langsung ke ACC SPV, tidak melalui ACC PIC lagi
+                dateSubmitted: new Date().toISOString().split('T')[0],
+                dateApproved: null,
+                details: {
+                    asal: document.getElementById('magang-asal').value,
+                    tglMulai: document.getElementById('magang-tgl-mulai').value,
+                    durasi: document.getElementById('magang-durasi').value,
+                    disiplin, tanggungjawab, kerjasama, teknis, nilaiAkhir,
+                    ringkasan: document.getElementById('magang-ringkasan').value,
+                    rekomendasi: document.getElementById('magang-rekomendasi').value
+                }
+            };
+            submissions.unshift(newSubmission); saveData();
+            document.getElementById('magangForm').reset();
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('magang-tgl-mulai').value = today;
+            showCustomToast('success', `Penilaian magang diteruskan ke antrean ACC SPV.`);
+            changeTab('dashboard');
+        }
+
         // PELANGGARAN
         function renderViolationsTable() {
             const tbody = document.getElementById('vPicTableBody');
@@ -1293,6 +1427,7 @@
             if (sub.type === 'cuti') d.innerHTML = `<div><b>Kategori:</b> ${sub.details.jenis}</div><div><b>Tgl:</b> ${sub.details.mulai} s/d ${sub.details.selesai}</div><div><b>Alasan:</b> ${sub.details.alasan}</div>`;
             else if (sub.type === 'izin') d.innerHTML = `<div><b>Jenis:</b> ${sub.details.jenis}</div><div><b>Waktu:</b> ${sub.details.tgl}</div><div><b>Alasan:</b> ${sub.details.alasan}</div>`;
             else if (sub.type === 'shift') d.innerHTML = `<div><b>Tgl:</b> ${sub.details.tgl} | <b>Pengganti:</b> ${sub.details.pengganti}</div><div><b>Shift:</b> ${sub.details.shiftAwal} $\\rightarrow$ ${sub.details.shiftBaru}</div><div><b>Alasan:</b> ${sub.details.alasan}</div>`;
+            else if (sub.type === 'magang') d.innerHTML = `<div><b>Asal Sekolah/Kampus:</b> ${sub.details.asal}</div><div><b>Mulai Magang:</b> ${sub.details.tglMulai} | <b>Durasi:</b> ${sub.details.durasi}</div><div><b>Nilai:</b> Kedisiplinan ${sub.details.disiplin}, Tanggung Jawab ${sub.details.tanggungjawab}, Kerjasama ${sub.details.kerjasama}, Teknis ${sub.details.teknis} &mdash; <b>Rata-rata: ${sub.details.nilaiAkhir}</b></div><div><b>Ringkasan:</b> ${sub.details.ringkasan}</div><div><b>Rekomendasi:</b> ${sub.details.rekomendasi}</div>`;
             else d.innerHTML = `<div><b>Judul:</b> ${sub.details.judul} | <b>Lokasi:</b> ${sub.details.lokasi}</div><div><b>Waktu:</b> ${sub.details.tglMulai} s/d ${sub.details.tglSelesai}</div><div><b>Kronologi:</b> ${sub.details.kronologi}</div><div><b>Dampak:</b> ${sub.details.dampak}</div>`;
         }
 
@@ -1303,7 +1438,13 @@
             if (currentUser.role === 'pic') {
                 sub.status = 'pending_spv'; sub.picSignature = currentUser.signature; sub.picName = currentUser.nama;
             } else if (currentUser.role === 'spv') {
-                sub.status = 'pending_hrd'; sub.spvSignature = currentUser.signature;
+                sub.spvSignature = currentUser.signature;
+                if (sub.type === 'magang') {
+                    // Penilaian magang cukup ACC SPV, langsung selesai (tidak perlu ACC HRD)
+                    sub.status = 'approved'; sub.dateApproved = new Date().toISOString().split('T')[0];
+                } else {
+                    sub.status = 'pending_hrd';
+                }
             } else if (currentUser.role === 'hrd') {
                 sub.status = 'approved'; sub.hrdSignature = currentUser.signature; sub.dateApproved = new Date().toISOString().split('T')[0];
             }
@@ -1417,7 +1558,7 @@
             
             container.innerHTML = `
                 <div class="text-center mb-6"><h2 class="font-black text-xl border-b inline-block pb-1">SURAT TEGURAN KEDISIPLINAN</h2></div>
-                <div class="bg-gray-50 border p-3 text-xs mb-4"><b>Nama:</b> ${emp.nama} <br><b>NIK:</b> ${emp.nik} <br><b>Divisi:</b> ${emp.divisi}</div>
+                <div class="bg-gray-50 border p-3 text-xs mb-4"><b>Nama:</b> ${emp.nama} <br><b>NIK:</b> ${emp.nik} <br><b>Jabatan:</b> ${emp.divisi}</div>
                 <p class="text-xs text-justify mb-2">Pekerja tersebut telah melakukan ${empVio.length} pelanggaran:</p>
                 <table class="w-full text-[10px] border border-black text-left mb-6">
                     <thead class="border-b border-black"><tr><th class="p-1">Tgl</th><th class="p-1">Jenis</th><th class="p-1">Ket</th></tr></thead>
@@ -1438,6 +1579,55 @@
             
             const spv = users.find(u=>u.role==='spv'); const hrd = users.find(u=>u.role==='hrd');
 
+            // Template cetak khusus untuk Nilai Anak Magang (skor per aspek + TTD PIC & SPV saja, tanpa HRD)
+            if (sub.type === 'magang') {
+                const d = sub.details;
+                container.innerHTML = `
+                    <div class="text-center mb-6"><h2 class="font-black text-lg border-b inline-block pb-1">LEMBAR PENILAIAN ANAK MAGANG</h2><p class="text-xs">ID: ${sub.id}</p></div>
+                    <h3 class="font-bold text-xs bg-gray-100 p-1 border border-black mb-2">IDENTITAS ANAK MAGANG</h3>
+                    <table class="text-xs mb-4 w-full">
+                        <tr><td class="w-1/3">Nama</td><td>: <b>${sub.nama}</b></td></tr>
+                        <tr><td>Asal Sekolah/Kampus</td><td>: ${d.asal}</td></tr>
+                        <tr><td>Tanggal Mulai</td><td>: ${d.tglMulai}</td></tr>
+                        <tr><td>Durasi Magang</td><td>: ${d.durasi}</td></tr>
+                    </table>
+
+                    <h3 class="font-bold text-xs bg-gray-100 p-1 border border-black mb-2">RINCIAN NILAI (SKALA 0-100)</h3>
+                    <table class="w-full text-xs border border-black text-left mb-4 border-collapse">
+                        <thead class="border-b border-black bg-gray-50"><tr><th class="p-1.5 border border-black">Aspek Penilaian</th><th class="p-1.5 border border-black text-center w-24">Nilai</th></tr></thead>
+                        <tbody>
+                            <tr><td class="p-1.5 border border-black">Kedisiplinan</td><td class="p-1.5 border border-black text-center">${d.disiplin}</td></tr>
+                            <tr><td class="p-1.5 border border-black">Tanggung Jawab</td><td class="p-1.5 border border-black text-center">${d.tanggungjawab}</td></tr>
+                            <tr><td class="p-1.5 border border-black">Kerjasama Tim</td><td class="p-1.5 border border-black text-center">${d.kerjasama}</td></tr>
+                            <tr><td class="p-1.5 border border-black">Keterampilan Teknis</td><td class="p-1.5 border border-black text-center">${d.teknis}</td></tr>
+                            <tr class="font-bold bg-gray-50"><td class="p-1.5 border border-black">NILAI AKHIR (Rata-rata)</td><td class="p-1.5 border border-black text-center">${d.nilaiAkhir}</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h3 class="font-bold text-xs bg-gray-100 p-1 border border-black mb-2">RINGKASAN & REKOMENDASI</h3>
+                    <table class="text-xs mb-8 w-full border p-2 bg-gray-50 border-collapse">
+                        <tr><td class="align-top w-1/4">Ringkasan Kinerja</td><td>: ${d.ringkasan}</td></tr>
+                        <tr><td class="align-top">Rekomendasi</td><td>: <b>${d.rekomendasi}</b></td></tr>
+                    </table>
+
+                    <h3 class="font-bold text-xs bg-gray-100 p-1 border border-black mb-2 text-center">LEMBAR PENGESAHAN DIGITAL</h3>
+                    <div class="grid grid-cols-2 gap-2 text-center text-[10px] mt-4">
+                        <div class="border p-2">
+                            <b class="text-blue-700">Dinilai oleh PIC</b>
+                            <div class="h-16 flex items-center justify-center my-1">${sub.picSignature ? `<img src="${sub.picSignature}" class="max-h-full">` : '-'}</div>
+                            <u>${sub.picName || sub.inputterName || '-'}</u>
+                        </div>
+                        <div class="border p-2">
+                            <b class="text-amber-600">ACC SPV</b>
+                            <div class="h-16 flex items-center justify-center my-1">${sub.spvSignature ? `<img src="${sub.spvSignature}" class="max-h-full">` : '-'}</div>
+                            <u>${spv ? spv.nama : 'SPV'}</u>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('printArea').classList.remove('hidden'); setTimeout(() => { window.print(); document.getElementById('printArea').classList.add('hidden'); }, 300);
+                return;
+            }
+
             let det = '';
             if(sub.type==='cuti') det=`<tr><td>Jenis</td><td>: ${sub.details.jenis}</td></tr><tr><td>Tgl</td><td>: ${sub.details.mulai} s/d ${sub.details.selesai}</td></tr><tr><td>Alasan</td><td>: ${sub.details.alasan}</td></tr>`;
             else if(sub.type==='izin') det=`<tr><td>Jenis</td><td>: ${sub.details.jenis}</td></tr><tr><td>Tgl</td><td>: ${sub.details.tgl}</td></tr><tr><td>Alasan</td><td>: ${sub.details.alasan}</td></tr>`;
@@ -1447,7 +1637,7 @@
             container.innerHTML = `
                 <div class="text-center mb-6"><h2 class="font-black text-lg border-b inline-block pb-1">FORMULIR PENGAJUAN / DOKUMEN</h2><p class="text-xs">ID: ${sub.id} | Kategori: ${sub.type.toUpperCase()}</p></div>
                 <h3 class="font-bold text-xs bg-gray-100 p-1 border border-black mb-2">IDENTITAS PEKERJA</h3>
-                <table class="text-xs mb-4 w-full"><tr><td w-1/3>Nama</td><td>: <b>${sub.nama}</b></td></tr><tr><td>NIK</td><td>: ${sub.nik}</td></tr><tr><td>Divisi</td><td>: ${sub.divisi}</td></tr></table>
+                <table class="text-xs mb-4 w-full"><tr><td w-1/3>Nama</td><td>: <b>${sub.nama}</b></td></tr><tr><td>NIK</td><td>: ${sub.nik}</td></tr><tr><td>Jabatan</td><td>: ${sub.divisi}</td></tr></table>
                 
                 <h3 class="font-bold text-xs bg-gray-100 p-1 border border-black mb-2">DETAIL</h3>
                 <table class="text-xs mb-8 w-full border p-2 bg-gray-50 border-collapse"><tbody class="align-top">${det}</tbody></table>
